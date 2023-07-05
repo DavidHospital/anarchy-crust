@@ -1,5 +1,6 @@
 use std::fmt::Display;
 
+#[derive(Debug)]
 pub struct BitBoard(u64);
 
 impl BitBoard {
