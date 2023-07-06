@@ -1,15 +1,10 @@
 use bitboard::BitBoard;
 
-use crate::board::{BoardState, Piece, Player};
-
 mod bitboard;
 mod board;
 
 fn main() {
-    let mut board = BoardState::empty();
-    println!("{:?}", board);
-
-    board[(Player::White, Piece::Knight)] = BitBoard::new(37);
-    println!("{}", board[(Player::White, Piece::Knight)]);
-    println!("{:?}", board);
+    let bitboard =
+        BitBoard::new(0x00_FF_00_00_00_00_FF_00) | BitBoard::new(0x42_00_00_00_00_00_00_42);
+    println!("{}", bitboard);
 }
