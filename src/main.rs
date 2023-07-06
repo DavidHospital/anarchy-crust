@@ -1,10 +1,14 @@
-use bitboard::BitBoard;
+use board::constants::STARTING_PIECES;
 
-mod bitboard;
-mod board;
+use crate::board::board::{BoardState, Piece, Player};
+
+mod board {
+    pub mod bitboard;
+    pub mod board;
+    pub mod constants;
+}
 
 fn main() {
-    let bitboard =
-        BitBoard::new(0x00_FF_00_00_00_00_FF_00) | BitBoard::new(0x42_00_00_00_00_00_00_42);
-    println!("{}", bitboard);
+    let board = BoardState::new(STARTING_PIECES);
+    println!("{}", board[(Player::White, Piece::Knight)]);
 }

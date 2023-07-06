@@ -1,6 +1,6 @@
 use std::ops::{Index, IndexMut};
 
-use crate::bitboard::BitBoard;
+use super::bitboard::BitBoard;
 
 pub enum Player {
     White,
@@ -29,12 +29,18 @@ fn piece_index(player: Player, piece: Piece) -> usize {
         }
 }
 
-#[derive(Debug)]
+pub type BoardStatePieces = [BitBoard; 12];
+
+#[derive(Debug, Clone, Copy)]
 pub struct BoardState {
-    pieces: [BitBoard; 12],
+    pieces: BoardStatePieces,
 }
 
 impl BoardState {
+    pub fn new(pieces: BoardStatePieces) -> Self {
+        BoardState { pieces }
+    }
+
     pub fn empty() -> Self {
         BoardState {
             pieces: Default::default(),

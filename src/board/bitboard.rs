@@ -3,11 +3,11 @@ use std::{
     ops::{BitAnd, BitOr},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct BitBoard(u64);
 
 impl BitBoard {
-    pub fn new(val: u64) -> Self {
+    pub const fn new(val: u64) -> Self {
         BitBoard(val)
     }
 }
