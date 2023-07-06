@@ -37,14 +37,8 @@ pub struct BoardState {
 }
 
 impl BoardState {
-    pub fn new(pieces: BoardStatePieces) -> Self {
+    pub const fn new(pieces: BoardStatePieces) -> Self {
         BoardState { pieces }
-    }
-
-    pub fn empty() -> Self {
-        BoardState {
-            pieces: Default::default(),
-        }
     }
 }
 

@@ -1,6 +1,7 @@
-use board::constants::STARTING_PIECES;
-
-use crate::board::board::{BoardState, Piece, Player};
+use crate::board::{
+    board::{Piece, Player},
+    constants::STARTING_BOARD,
+};
 
 mod board {
     pub mod bitboard;
@@ -9,6 +10,6 @@ mod board {
 }
 
 fn main() {
-    let board = BoardState::new(STARTING_PIECES);
+    let board = STARTING_BOARD;
     println!("{}", board[(Player::White, Piece::Knight)]);
 }

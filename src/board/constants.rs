@@ -1,4 +1,7 @@
-use super::{bitboard::BitBoard, board::BoardStatePieces};
+use super::{
+    bitboard::BitBoard,
+    board::{BoardState, BoardStatePieces},
+};
 
 // Starting position
 pub const STARTING_WHITE_KINGS: BitBoard = BitBoard::new(0x00_00_00_00_00_00_00_08);
@@ -28,3 +31,5 @@ pub const STARTING_PIECES: BoardStatePieces = [
     STARTING_BLACK_KNIGHTS,
     STARTING_BLACK_PAWNS,
 ];
+
+pub const STARTING_BOARD: BoardState = BoardState::new(STARTING_PIECES);
