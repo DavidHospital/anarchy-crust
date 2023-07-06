@@ -1,6 +1,6 @@
 # Anarchy Crust (WIP)
 
-A basic chess backend written in rust.
+A basic chess backend written in rust, with some extra-special rules...
 
 ## Planned Features
 
