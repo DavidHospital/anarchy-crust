@@ -1,6 +1,6 @@
 use std::{
     fmt::Display,
-    ops::{BitAnd, BitOr},
+    ops::{BitAnd, BitOr, BitXor, BitXorAssign},
 };
 
 #[derive(Debug, Clone, Copy)]
@@ -33,6 +33,22 @@ impl BitOr for BitBoard {
     #[inline(always)]
     fn bitor(self, other: Self) -> Self::Output {
         BitBoard(self.0 | other.0)
+    }
+}
+
+impl BitXor for BitBoard {
+    type Output = BitBoard;
+
+    #[inline(always)]
+    fn bitxor(self, other: Self) -> Self::Output {
+        BitBoard(self.0 ^ other.0)
+    }
+}
+
+impl BitXorAssign for BitBoard {
+    #[inline(always)]
+    fn bitxor_assign(&mut self, other: Self) {
+        self.0 ^= other.0;
     }
 }
 

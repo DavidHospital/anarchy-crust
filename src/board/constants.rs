@@ -1,6 +1,6 @@
 use super::{
     bitboard::BitBoard,
-    board::{BoardState, BoardStatePieces},
+    board::{BoardState, BoardStateFlags, BoardStatePieces},
 };
 
 // Starting position
@@ -32,4 +32,15 @@ pub const STARTING_PIECES: BoardStatePieces = [
     STARTING_BLACK_PAWNS,
 ];
 
-pub const STARTING_BOARD: BoardState = BoardState::new(STARTING_PIECES);
+// Flag masks
+pub const TURN_FLAG_MASK: BoardStateFlags = 0x80_00;
+pub const RANKS_FLAG_MASK: BoardStateFlags = 0x00_FF;
+pub const WHTIE_CASLTING_FLAG_MASK: BoardStateFlags = 0x0B_00;
+pub const BLACK_CASLTING_FLAG_MASK: BoardStateFlags = 0x06_00;
+
+// Starting flags
+pub const STARTING_TURN_PLAYER_FLAG: BoardStateFlags = 0x80_00;
+pub const STARTING_CASTLING_FLAGS: BoardStateFlags = 0x0F_00;
+pub const STARTING_RANKS_FLAGS: BoardStateFlags = 0x00_00;
+pub const STARTING_FLAGS: BoardStateFlags =
+    STARTING_TURN_PLAYER_FLAG | STARTING_CASTLING_FLAGS | STARTING_RANKS_FLAGS;
