@@ -1,8 +1,13 @@
+use std::ops::BitAnd;
+
 use super::{
     bitboard::BitBoard,
-    board::{BoardState, Piece, Player},
+    board::{BoardState, Piece, PieceType, Player},
     constants::{
-        BLACK_CASLTING_FLAG_MASK, RANKS_FLAG_MASK, TURN_FLAG_MASK, WHTIE_CASLTING_FLAG_MASK,
+        BLACK_CASTLING_FLAG_MASK, BLACK_KINGSIDE_CASTLING_FLAG, BLACK_KINGSIDE_ROOK,
+        BLACK_QUEENSIDE_CASTLING_FLAG, BLACK_QUEENSIDE_ROOK, RANKS_FLAG_MASK, TURN_FLAG_MASK,
+        WHITE_KINGSIDE_CASTLING_FLAG, WHITE_KINGSIDE_ROOK, WHITE_QUEENSIDE_CASTLING_FLAG,
+        WHITE_QUEENSIDE_ROOK, WHTIE_CASTLING_FLAG_MASK,
     },
 };
 
@@ -24,7 +29,34 @@ struct SingleMove(AtomicMove);
 
 impl MoveInternal for SingleMove {
     fn _mv_pieces(self, board: BoardState) -> BoardState {
-        self.0.mv_on(board)
+        let board = self.0.mv_on(board);
+        match self.0.piece {
+            (player, PieceType::King) => board.reset_castling_flags(player),
+            (player, PieceType::Rook) => {
+                let (kingside_rook, queenside_rook, kingside_flag, queenside_flag) = match player {
+                    Player::White => (
+                        WHITE_KINGSIDE_ROOK,
+                        WHITE_QUEENSIDE_ROOK,
+                        WHITE_KINGSIDE_CASTLING_FLAG,
+                        WHITE_QUEENSIDE_CASTLING_FLAG,
+                    ),
+                    Player::Black => (
+                        BLACK_KINGSIDE_ROOK,
+                        BLACK_QUEENSIDE_ROOK,
+                        BLACK_KINGSIDE_CASTLING_FLAG,
+                        BLACK_QUEENSIDE_CASTLING_FLAG,
+                    ),
+                };
+                if self.0.mv.bitand(kingside_rook).is_set() {
+                    board.reset_flags(kingside_flag)
+                } else if self.0.mv.bitand(queenside_rook).is_set() {
+                    board.reset_flags(queenside_flag)
+                } else {
+                    board
+                }
+            }
+            _ => board,
+        }
     }
 }
 
@@ -53,8 +85,8 @@ impl MoveInternal for CastlingMove {
 
     fn _update_flags(self, board: BoardState) -> BoardState {
         board.reset_flags(match self.king_mv.piece.0 {
-            Player::White => WHTIE_CASLTING_FLAG_MASK,
-            Player::Black => BLACK_CASLTING_FLAG_MASK,
+            Player::White => WHTIE_CASTLING_FLAG_MASK,
+            Player::Black => BLACK_CASTLING_FLAG_MASK,
         })
     }
 }
@@ -74,7 +106,7 @@ impl<T: MoveInternal> Move for T {
     fn perform_mv_on(self, board: BoardState) -> BoardState {
         let board = self._mv_pieces(board);
 
-        // swap turn order
+        // swap turn order, reset ranks flag mask (en passent, knight boost)
         board
             .swap_flags(TURN_FLAG_MASK)
             .reset_flags(RANKS_FLAG_MASK);

@@ -2,7 +2,9 @@ use std::ops::{Index, IndexMut};
 
 use super::{
     bitboard::BitBoard,
-    constants::{STARTING_FLAGS, STARTING_PIECES},
+    constants::{
+        BLACK_CASTLING_FLAG_MASK, STARTING_FLAGS, STARTING_PIECES, WHTIE_CASTLING_FLAG_MASK,
+    },
 };
 
 #[derive(Clone, Copy)]
@@ -65,6 +67,13 @@ impl BoardState {
     pub fn reset_flags(mut self, flags: BoardStateFlags) -> Self {
         self.flags &= !flags;
         self
+    }
+
+    pub fn reset_castling_flags(mut self, player: Player) -> Self {
+        match player {
+            Player::White => self.reset_flags(WHTIE_CASTLING_FLAG_MASK),
+            Player::Black => self.reset_flags(BLACK_CASTLING_FLAG_MASK),
+        }
     }
 }
 

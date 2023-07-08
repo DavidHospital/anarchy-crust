@@ -1,6 +1,6 @@
 use super::{
     bitboard::BitBoard,
-    board::{BoardState, BoardStateFlags, BoardStatePieces},
+    board::{BoardStateFlags, BoardStatePieces},
 };
 
 // Starting position
@@ -32,11 +32,24 @@ pub const STARTING_PIECES: BoardStatePieces = [
     STARTING_BLACK_PAWNS,
 ];
 
+pub const WHITE_KINGSIDE_ROOK: BitBoard = BitBoard::new(0x00_00_00_00_00_00_00_01);
+pub const WHITE_QUEENSIDE_ROOK: BitBoard = BitBoard::new(0x00_00_00_00_00_00_00_80);
+pub const BLACK_KINGSIDE_ROOK: BitBoard = BitBoard::new(0x01_00_00_00_00_00_00_00);
+pub const BLACK_QUEENSIDE_ROOK: BitBoard = BitBoard::new(0x80_00_00_00_00_00_00_00);
+
+// flags
+pub const WHITE_KINGSIDE_CASTLING_FLAG: BoardStateFlags = 0x08_00;
+pub const WHITE_QUEENSIDE_CASTLING_FLAG: BoardStateFlags = 0x04_00;
+pub const BLACK_KINGSIDE_CASTLING_FLAG: BoardStateFlags = 0x02_00;
+pub const BLACK_QUEENSIDE_CASTLING_FLAG: BoardStateFlags = 0x01_00;
+
 // Flag masks
 pub const TURN_FLAG_MASK: BoardStateFlags = 0x80_00;
 pub const RANKS_FLAG_MASK: BoardStateFlags = 0x00_FF;
-pub const WHTIE_CASLTING_FLAG_MASK: BoardStateFlags = 0x0B_00;
-pub const BLACK_CASLTING_FLAG_MASK: BoardStateFlags = 0x06_00;
+pub const WHTIE_CASTLING_FLAG_MASK: BoardStateFlags =
+    WHITE_KINGSIDE_CASTLING_FLAG | WHITE_QUEENSIDE_CASTLING_FLAG;
+pub const BLACK_CASTLING_FLAG_MASK: BoardStateFlags =
+    BLACK_KINGSIDE_CASTLING_FLAG | BLACK_QUEENSIDE_CASTLING_FLAG;
 
 // Starting flags
 pub const STARTING_TURN_PLAYER_FLAG: BoardStateFlags = 0x80_00;

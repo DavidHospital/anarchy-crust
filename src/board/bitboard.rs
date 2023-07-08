@@ -10,6 +10,16 @@ impl BitBoard {
     pub const fn new(val: u64) -> Self {
         BitBoard(val)
     }
+
+    #[inline(always)]
+    pub fn is_empty(self) -> bool {
+        self.0 == 0
+    }
+
+    #[inline(always)]
+    pub fn is_set(self) -> bool {
+        !self.is_empty()
+    }
 }
 
 impl Default for BitBoard {
