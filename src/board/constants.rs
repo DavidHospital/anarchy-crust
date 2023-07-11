@@ -1,6 +1,6 @@
 use super::{
     bitboard::BitBoard,
-    board::{BoardStateFlags, BoardStatePieces},
+    board_state::{BoardStateFlags, BoardStatePieces},
 };
 
 // Starting position
@@ -32,28 +32,18 @@ pub const STARTING_PIECES: BoardStatePieces = [
     STARTING_BLACK_PAWNS,
 ];
 
-pub const WHITE_KINGSIDE_ROOK: BitBoard = BitBoard::new(0x00_00_00_00_00_00_00_01);
-pub const WHITE_QUEENSIDE_ROOK: BitBoard = BitBoard::new(0x00_00_00_00_00_00_00_80);
-pub const BLACK_KINGSIDE_ROOK: BitBoard = BitBoard::new(0x01_00_00_00_00_00_00_00);
-pub const BLACK_QUEENSIDE_ROOK: BitBoard = BitBoard::new(0x80_00_00_00_00_00_00_00);
-
 // flags
-pub const WHITE_KINGSIDE_CASTLING_FLAG: BoardStateFlags = 0x08_00;
-pub const WHITE_QUEENSIDE_CASTLING_FLAG: BoardStateFlags = 0x04_00;
-pub const BLACK_KINGSIDE_CASTLING_FLAG: BoardStateFlags = 0x02_00;
-pub const BLACK_QUEENSIDE_CASTLING_FLAG: BoardStateFlags = 0x01_00;
+pub const CASTLING_FLAGS: [BoardStateFlags; 4] = [0x08_00, 0x04_00, 0x02_00, 0x01_00];
 
 // Flag masks
 pub const TURN_FLAG_MASK: BoardStateFlags = 0x80_00;
-pub const RANKS_FLAG_MASK: BoardStateFlags = 0x00_FF;
-pub const WHTIE_CASTLING_FLAG_MASK: BoardStateFlags =
-    WHITE_KINGSIDE_CASTLING_FLAG | WHITE_QUEENSIDE_CASTLING_FLAG;
-pub const BLACK_CASTLING_FLAG_MASK: BoardStateFlags =
-    BLACK_KINGSIDE_CASTLING_FLAG | BLACK_QUEENSIDE_CASTLING_FLAG;
+pub const FILES_FLAG_MASK: BoardStateFlags = 0x00_FF;
+pub const WHTIE_CASTLING_FLAG_MASK: BoardStateFlags = CASTLING_FLAGS[0] | CASTLING_FLAGS[1];
+pub const BLACK_CASTLING_FLAG_MASK: BoardStateFlags = CASTLING_FLAGS[2] | CASTLING_FLAGS[3];
 
 // Starting flags
 pub const STARTING_TURN_PLAYER_FLAG: BoardStateFlags = 0x80_00;
 pub const STARTING_CASTLING_FLAGS: BoardStateFlags = 0x0F_00;
-pub const STARTING_RANKS_FLAGS: BoardStateFlags = 0x00_00;
+pub const STARTING_FILES_FLAGS: BoardStateFlags = 0x00_00;
 pub const STARTING_FLAGS: BoardStateFlags =
-    STARTING_TURN_PLAYER_FLAG | STARTING_CASTLING_FLAGS | STARTING_RANKS_FLAGS;
+    STARTING_TURN_PLAYER_FLAG | STARTING_CASTLING_FLAGS | STARTING_FILES_FLAGS;

@@ -23,19 +23,40 @@ pub enum PieceType {
     Pawn,
 }
 
-pub type Piece = (Player, PieceType);
+#[derive(Clone, Copy)]
+pub struct Piece {
+    player: Player,
+    piece_type: PieceType,
+}
+
+impl Piece {
+    pub fn new(player: Player, piece_type: PieceType) -> Self {
+        Piece { player, piece_type }
+    }
+
+    pub fn player(self) -> Player {
+        self.player
+    }
+
+    pub fn piece_type(self) -> PieceType {
+        self.piece_type
+    }
+}
 
 #[inline(always)]
-fn piece_index((player, piece_type): Piece) -> usize {
-    (if let Player::Black = player { 6 } else { 0 })
-        + match piece_type {
-            PieceType::King => 0,
-            PieceType::Queen => 1,
-            PieceType::Rook => 2,
-            PieceType::Bishop => 3,
-            PieceType::Knight => 4,
-            PieceType::Pawn => 5,
-        }
+fn piece_index(piece: Piece) -> usize {
+    (if let Player::Black = piece.player {
+        6
+    } else {
+        0
+    }) + match piece.piece_type {
+        PieceType::King => 0,
+        PieceType::Queen => 1,
+        PieceType::Rook => 2,
+        PieceType::Bishop => 3,
+        PieceType::Knight => 4,
+        PieceType::Pawn => 5,
+    }
 }
 
 pub type BoardStatePieces = [BitBoard; 12];
@@ -59,6 +80,10 @@ impl BoardState {
         }
     }
 
+    pub fn check_flag(self, flag: BoardStateFlags) -> bool {
+        self.flags & flag > 0
+    }
+
     pub fn swap_flags(mut self, flags: BoardStateFlags) -> Self {
         self.flags *= flags;
         self
@@ -69,7 +94,7 @@ impl BoardState {
         self
     }
 
-    pub fn reset_castling_flags(mut self, player: Player) -> Self {
+    pub fn reset_castling_flags(self, player: Player) -> Self {
         match player {
             Player::White => self.reset_flags(WHTIE_CASTLING_FLAG_MASK),
             Player::Black => self.reset_flags(BLACK_CASTLING_FLAG_MASK),

@@ -28,6 +28,12 @@ impl Default for BitBoard {
     }
 }
 
+impl From<u64> for BitBoard {
+    fn from(value: u64) -> Self {
+        BitBoard(value)
+    }
+}
+
 impl BitAnd for BitBoard {
     type Output = BitBoard;
 

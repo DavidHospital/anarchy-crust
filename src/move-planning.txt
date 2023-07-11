@@ -1,0 +1,45 @@
+Zero moves:
+- knight boost pass
+- extended en passent pass
+
+Single moves:
+- single piece move (no capture)
+- Il Vaticano: pawn destroy
+
+Double moves:
+- single piece move and capture
+- Promotion: pawn destroy and piece creation
+- Castling: King move and Rook move
+
+Triple moves:
+- Knook fusion: Knight and rook destroy, knook creation
+
+
+
+Move lifecycle:
+- Move created
+- Move applied to BoardState
+	 - Apply piece state changes to board
+	 	- all moves except "pass" moves
+	 - Apply flag state changes to board
+	 	- turn flag (all moves except "pass" moves)
+		- castling flags (all moves except "pass" moves)
+		- file flags
+			- reset all file flags
+			- set file flags for en passent
+			- set file flags for knight boost
+
+
+traits:
+- Move
+	- apply_flags(self, board_state: BoardState) -> BoardState // applies flag changes on a `BoardState`
+	- perform_move(self, board_state: BoardState) -> BoardState {
+		self.apply_flags(board_state)
+	}
+
+
+- PieceMove: Move
+	- get_move(self, idx: usize) -> AtomicMove // gets `AtomicMove` at an index
+	- apply_piece_moves(self, board_state: BoardState) -> BoardState // applies piece changes on a `BoardState`
+	- perform_move(self, )
+
